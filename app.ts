@@ -92,7 +92,7 @@ client.on('messageCreate', async (message: Message) => {
     if (command === "memes") {
       try{
         if (message.channel instanceof TextChannel) {
-          message.channel.send(await Memes());
+          message.channel.send(await Memes() || "Houve um problema com a função de memes :/");
         }  
       }catch(error){
         if (message.channel instanceof TextChannel) {

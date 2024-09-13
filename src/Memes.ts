@@ -1,47 +1,22 @@
 import axios from 'axios';
 
-async function getRandomImageFromSubreddit(subreddit: string): Promise<string> {
+async function getRandomImage(): Promise<string | null> {
     try {
-        const response = await axios.get(`https://www.reddit.com/r/${subreddit}/random.json`);  
-        const post = response.data[0]?.data?.children[0]?.data;
+        const response = await axios.get(`https://meme-api.com/gimme`);
         
-        if (post && post.post_hint === 'image') {
-            return post.url;
-        } else {
-            return post.selftext; 
-        }
+        console.log()
+        return response.data.url
+        
     } catch (error) {
-        console.error('Ocorreu um erro ao pegar imagem no Reddit :/ \nPor favor, use $report para reportar o erro.:', error);
-        return `Ocorreu um erro ao pegar imagem no Reddit :/ \nPor favor, use $report com a descrição do problema para reportar o erro.`;
+        console.error('Erro ao buscar post do subreddit:', error);
+        return 'Erro ao buscar post';
     }
 }
 
 
-async function getRandomTextPostFromSubreddit(subreddit: string): Promise<string> {
-    try {
-        // Fazendo requisição para a API pública do Reddit
-        const response = await axios.get(`https://www.reddit.com/r/${subreddit}/random.json`);
-
-        // Verificando se a resposta contém dados válidos
-        const post = response.data[0]?.data?.children[0]?.data;
-
-        if (post && post.is_self) {
-            // Retornando o texto do post
-            return post.selftext;
-        } else {
-            console.log('Nenhum post de texto encontrado.');
-            return `Ocorreu um erro ao pegar um relato no Reddit :/ \nPor favor, use $report com a descrição do problema para reportar o erro.`;
-        }
-    } catch (error) {
-        console.error('Erro ao buscar post de texto do subreddit:', error);
-        return `Ocorreu um erro ao pegar um relato no Reddit :/ \nPor favor, use $report com a descrição do problema para reportar o erro.`;
-    }
-}
-
-
-export async function Memes():Promise<string> {
+export async function Memes(): Promise<string | null> {
     try{
-        const memeType = Math.floor(Math.random() * 3);
+        const memeType = Math.floor(Math.random() * 2);
     
 
         if(memeType === 0){
@@ -89,25 +64,10 @@ export async function Memes():Promise<string> {
             return array[randomIndex];
         }
         if(memeType === 1){
-            let meme:string | null = await getRandomImageFromSubreddit('ShitpostBR');
-            if(meme.length > 0){
-                console.log(meme.length)
-                return meme; 
-            }else{
-                return "Houve um problema com a função de memes :/";    
-            }
-            
-        }
-    
-        if(memeType === 2){
-           let meme = await getRandomTextPostFromSubreddit('EuSouOBabaca');
-           console.log(meme.length)
-           if(meme.length > 0){
+            let meme:string | null = await getRandomImage();
             return meme; 
-        }else{
-            return "Houve um problema com a função de memes :/";         
-        }        
-        } 
+        }
+           
         return "Houve um problema com a função de memes :/" 
 
     }catch(error){
