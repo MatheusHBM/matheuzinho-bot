@@ -6,6 +6,8 @@ import { Memes } from './src/Memes';
 import { Play, tocarMusica } from './src/Play';
 import { Feedback } from './src/Feedback';
 import { Report } from './src/Report';
+import { Help } from './src/Help';
+import { Words } from './src/Words';
 
 config();
 
@@ -111,7 +113,18 @@ client.on('messageCreate', async (message: Message) => {
     if (message.channel instanceof TextChannel) {
       const report = args.join(' ');
         message.channel.send(Report(message.author.username,report));
-      }          
+      }
+                
+}
+if (command === "ajuda") {
+  if (message.channel instanceof TextChannel) {
+      message.channel.send(Help());
+    } 
+}
+if (command === "frases") {
+  if (message.channel instanceof TextChannel) {
+      message.channel.send(Words());
+    } 
 }
     if (command === "tocar") {
       if (message.channel instanceof TextChannel) {
